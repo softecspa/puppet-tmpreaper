@@ -1,0 +1,9 @@
+== TmpReaper
+
+tmpreaper removes files which haven't been accessed for a period of time
+
+This module install tmpreaper package and activate it configuring /etc/tmpreaper.conf
+
+The module configure the default cron with default parameters, to create
+custom cleaning job you can use the define tmpreaper::daily
+
