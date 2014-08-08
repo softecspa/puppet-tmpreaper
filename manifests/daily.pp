@@ -40,14 +40,15 @@ define tmpreaper::daily (
 
     validate_absolute_path($name)
 
-    $safe_name = regsubst($name, '/', '-', 'G')
+    $safe_name = regsubst($name, '(/|\.)', '-', 'G')
+
 
     if ($symlinks == true){
         $symlinks_cmd = '--symlinks'
     } else {
         $symlinks_cmd = ''
     }
- 
+
     $command = "/usr/sbin/tmpreaper --delay=${delay} --mtime-dir ${symlinks_cmd} --${check_method} ${time} ${name}"
 
     cron::entry { "tmpreaper-$safe_name":
