@@ -28,33 +28,32 @@
 #
 #   tmpreaper::daily { '/var/cache': }
 define tmpreaper::daily (
-    $ensure         = 'present',
-    $delay          = 256,
-    $time           = '7d',
-    $check_method   = 'ctime',
-    $symlinks       = true,
-    $user           = 'root',
+  $ensure         = 'present',
+  $delay          = 256,
+  $time           = '7d',
+  $check_method   = 'ctime',
+  $symlinks       = true,
+  $user           = 'root',
 )
 {
-    include tmpreaper
+  include tmpreaper
 
-    validate_absolute_path($name)
+  validate_absolute_path($name)
 
-    $safe_name = regsubst($name, '(/|\.)', '-', 'G')
+  $safe_name = regsubst($name, '(/|\.)', '-', 'G')
 
+  if ($symlinks == true){
+    $symlinks_cmd = '--symlinks'
+  } else {
+    $symlinks_cmd = ''
+  }
 
-    if ($symlinks == true){
-        $symlinks_cmd = '--symlinks'
-    } else {
-        $symlinks_cmd = ''
-    }
+  $command = "/usr/sbin/tmpreaper --delay=${delay} --mtime-dir ${symlinks_cmd} --${check_method} ${time} ${name}"
 
-    $command = "/usr/sbin/tmpreaper --delay=${delay} --mtime-dir ${symlinks_cmd} --${check_method} ${time} ${name}"
-
-    cron::entry { "tmpreaper-${safe_name}":
-        ensure    => $ensure,
-        frequency => 'daily',
-        command   => $command,
-        user      => $user,
-    }
+  cron::entry { "tmpreaper-${safe_name}":
+    ensure    => $ensure,
+    frequency => 'daily',
+    command   => $command,
+    user      => $user,
+  }
 }
