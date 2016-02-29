@@ -51,7 +51,7 @@ define tmpreaper::daily (
 
     $command = "/usr/sbin/tmpreaper --delay=${delay} --mtime-dir ${symlinks_cmd} --${check_method} ${time} ${name}"
 
-    cron::entry { "tmpreaper-$safe_name":
+    cron::entry { "tmpreaper-${safe_name}":
         ensure    => $ensure,
         frequency => 'daily',
         command   => $command,

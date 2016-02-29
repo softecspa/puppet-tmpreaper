@@ -27,7 +27,7 @@ class tmpreaper(
   $tmpreaper_time='60d',
 ){
 
-  validate_re($ensure, '(present|absent)', "ensure must be 'present' or 'absent', checked value is '$ensure'")
+  validate_re($ensure, '(present|absent)', "ensure must be 'present' or 'absent', checked value is '${ensure}'")
   validate_re($tmpreaper_time, '\d+(d|m|h|s)?')
 
   package{ 'tmpreaper':
@@ -35,10 +35,10 @@ class tmpreaper(
   }
 
   concat{ '/etc/tmpreaper.conf':
-    owner   => root,
-    group   => admin,
-    mode    => 664,
-    warn    => true,
+    owner => root,
+    group => admin,
+    mode  => 664,
+    warn  => true,
   }
 
   concat::fragment{ 'tmpreaper.conf_general':
